@@ -1,0 +1,169 @@
+{%extends 'homebase.html'%}
+{%load static%}
+{% block title %} {{ setting.title }} {% endblock %}
+{%block head%}
+<link rel="stylesheet" type="text/css" href="{% static '' %}css/custom.css">
+{%endblock%}
+{%block body%}
+<!-- breadcrumb-section - start
+		================================================== -->
+		<section id="breadcrumb-section" class="breadcrumb-section clearfix">
+			<div class="jarallax" style="background-image: url({% static '' %}images/breadcrumb/0.breadcrumb-bg.jpg);">
+				<div class="overlay-black">
+					<div class="container">
+						<div class="row justify-content-center">
+							<div class="col-lg-6 col-md-12 col-sm-12">
+
+								<!-- breadcrumb-title - start -->
+								<div class="breadcrumb-title text-center mb-50">
+									<span class="sub-title">{{setting.title}}</span>
+									<h2 class="big-title">{{setting.title}}<strong>event</strong></h2>
+								</div>
+								<!-- breadcrumb-title - end -->
+
+								<!-- breadcrumb-list - start -->
+								<div class="breadcrumb-list">
+									<ul>
+										<li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Home</a></li>
+										<li class="breadcrumb-item active" aria-current="page">Organised Event by me</li>
+									</ul>
+								</div>
+								<!-- breadcrumb-list - end -->
+
+							</div>
+						</div>
+					</div>
+					{% if messages %}
+			<br>
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-9">
+
+							{% for message in messages %}
+								<div class="alert alert-{{message.tags}}" role="alert">
+									{{ message |safe}}
+								</div>
+							{% endfor %}
+
+						</div>
+					</div>
+				</div>
+
+			{% endif %}
+				</div>
+			</div>
+		</section>
+		<!-- breadcrumb-section - end
+		================================================== -->
+
+		<!-- event-section - start
+		================================================== -->
+		<section id="event-section" class="event-section  sec-ptb-100 clearfix">
+			<div class="container">
+				<div class="row">
+
+					<!-- sidebar-section - start -->
+					<div class="col-lg-3 col-md-12 col-sm-12">
+						{%include 'user_panel.html'%}
+					</div>
+					<!-- sidebar-section - end -->
+
+					<!-- - start -->
+					<div class="col-lg-9 col-md-12 col-sm-12">
+
+						<h2>Organised events by me<a class="rightside-content text-center" href="{% url 'addevent'%}"><button class="custom-btn">Add events</button></a></h2>
+						{%for e in event%}
+                        <!-- event-item - start -->
+								<div class="event-list-item clearfix">
+
+									<!-- event-image - start -->
+									<div class="event-image">
+
+										<img src="{{e.image.url}}" alt="Image_not_found" style="height:250px;width:250px;">
+									</div>
+									<!-- event-image - end -->
+
+									<!-- event-content - start -->
+									<div class="event-content">
+										<div class="event-title mb-15">
+											<h3 class="title">
+												{{e.title}}
+											</h3>
+
+										</div>
+										<p class="discription-text mb-30">
+											{{e.description|safe}}
+										</p>
+										<div class="event-info-list ul-li clearfix">
+											<ul>
+												<li>
+													<span class="icon">
+														<i class="fas fa-microphone"></i>
+													</span>
+													<div class="info-content">
+														<small>Organiser</small>
+														<h3>{{e.user}}</h3>
+													</div>
+												</li>
+												<li>
+													<span class="icon">
+														<i class="fas fa-ticket-alt"></i>
+													</span>
+													<div class="info-content">
+														<small>Max Seats</small>
+														<h3>{{e.members}}</h3>
+													</div>
+												</li>
+											</ul>
+										</div>
+										<div class="event-info-list ul-li clearfix">
+											<ul>
+												<li>
+													<a href="{%url 'updateevent' e.id%}" class="tickets-details-btn">
+														Update
+													</a>
+												</li>
+												<li>
+													<a href="{%url 'deletemyevent' e.id%}" class="tickets-details-btn">
+														Delete
+													</a>
+												</li>
+												<li>
+													<a href="{%url 'volunteer' e.id%}" class="tickets-details-btn">
+														Volunteer List
+													</a>
+												</li>
+												<li>
+													<a href="{%url 'e_comments' e.id%}" class="tickets-details-btn">
+														Comment List
+													</a>
+												</li>
+												<li>
+													<a href="{%url 'e_faq' e.id %}" class="tickets-details-btn">
+														FAQ list
+													</a>
+												</li>
+												<li>
+													<a href="{%url 'room' e.id e.slug%}" class="tickets-details-btn">
+														Join Chat Room
+													</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+									<!-- event-content - end -->
+
+								</div>
+								<!-- event-item - end -->
+						{%endfor%}
+
+					</div>
+					<!-- - end -->
+
+				</div>
+			</div>
+		</section>
+		<!-- event-section - end
+		================================================== -->
+
+{%endblock%}

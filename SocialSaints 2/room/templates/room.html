@@ -1,0 +1,167 @@
+{%extends 'homebase.html'%}
+{%load static%}
+{% block title %} {{ setting.title }} {% endblock %}
+{%block head%}
+<link rel="stylesheet" type="text/css" href="{% static '' %}css/custom.css">
+{%endblock%}
+{%block body%}
+<!-- breadcrumb-section - start
+		================================================== -->
+		<section id="breadcrumb-section" class="breadcrumb-section clearfix">
+			<div class="jarallax" style="background-image: url({% static '' %}images/breadcrumb/0.breadcrumb-bg.jpg);">
+				<div class="overlay-black">
+					<div class="container">
+						<div class="row justify-content-center">
+							<div class="col-lg-6 col-md-12 col-sm-12">
+
+								<!-- breadcrumb-title - start -->
+								<div class="breadcrumb-title text-center mb-50">
+									<span class="sub-title">{{setting.title}}</span>
+									<h2 class="big-title">{{setting.title}}<strong>event</strong></h2>
+								</div>
+								<!-- breadcrumb-title - end -->
+
+								<!-- breadcrumb-list - start -->
+								<div class="breadcrumb-list">
+									<ul>
+										<li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Home</a></li>
+										<li class="breadcrumb-item active" aria-current="page">Chat room for {{room.name}}</li>
+									</ul>
+								</div>
+								<!-- breadcrumb-list - end -->
+
+							</div>
+						</div>
+					</div>
+					{% if messages %}
+			<br>
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-9">
+
+							{% for message in messages %}
+								<div class="alert alert-{{message.tags}}" role="alert">
+									{{ message |safe}}
+								</div>
+							{% endfor %}
+
+						</div>
+					</div>
+				</div>
+
+			{% endif %}
+				</div>
+			</div>
+		</section>
+		<!-- breadcrumb-section - end
+		================================================== -->
+
+		<!-- event-section - start
+		================================================== -->
+		<section id="event-section" class="event-section  sec-ptb-100 clearfix">
+			<div class="container">
+				<div class="row">
+
+					<!-- sidebar-section - start -->
+					<div class="col-lg-3 col-md-12 col-sm-12">
+						{%include 'user_panel.html'%}
+					</div>
+					<!-- sidebar-section - end -->
+
+					<!-- - start -->
+					<div class="col-lg-9 col-md-12 col-sm-12">
+
+						<h2>Chat room for <strong>{{room.name}}</strong></h2>
+                        <div class="chat-messages space-y-3" id="chat-messages">
+                        {% for m in msg %}<b>{{ m.user.username }}</b>: {{ m.content }}<br>{% endfor %}
+                        </div>
+
+                        <form method="post" action="." class="flex">
+                            {%csrf_token%}
+        <input type="text" name="content" class="flex-1 mr-3" placeholder="Your message..." id="chat-message-input">
+
+        <button class="custom-btn" id="chat-message-submit">Submit</button>
+    </form>
+
+					</div>
+					<!-- - end -->
+
+				</div>
+			</div>
+		</section>
+		<!-- event-section - end
+		================================================== -->
+{% block scripts %}
+{{ room.slug|json_script:"json-roomname" }}
+{{ request.user.username|json_script:"json-username" }}
+
+<script>
+    const roomName = JSON.parse(document.getElementById('json-roomname').textContent);
+    const userName = JSON.parse(document.getElementById('json-username').textContent);
+    const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/'
+        + roomName
+        + '/'
+    );
+
+    chatSocket.onclose = function(e) {
+        console.log('onclose')
+    }
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+
+        if (data.message) {
+            document.querySelector('#chat-messages').innerHTML += ('<b>' + data.username + '</b>: ' + data.message + '<br>');
+        } else {
+            alert('The message was empty!')
+        }
+
+        scrollToBottom();
+    };
+
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        e.preventDefault()
+
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+
+        console.log({
+            'message': message,
+            'username': userName,
+            'room': roomName
+        })
+
+        chatSocket.send(JSON.stringify({
+            'message': message,
+            'username': userName,
+            'room': roomName
+        }));
+
+        messageInputDom.value = '';
+
+        return false
+    };
+
+    /**
+    * A function for finding the messages element, and scroll to the bottom of it.
+    */
+    function scrollToBottom() {
+        let objDiv = document.getElementById("chat-messages");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    }
+
+    // Add this below the function to trigger the scroll on load.
+    scrollToBottom();
+</script>
+{% endblock %}
+{%endblock%}

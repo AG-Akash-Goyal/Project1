@@ -1,0 +1,529 @@
+{%extends 'homebase.html'%}
+{%load static%}
+{% block title %} {{ setting.title }} {% endblock %}
+{%block head%}
+<link rel="stylesheet" type="text/css" href="{% static '' %}css/custom.css">
+
+<style>
+	.big{ width: 1.5em; height: 1.5em; }
+.accordion {
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: white;
+  border-radius: 10px;
+  overflow:hidden;
+}
+.accordion__answer
+{
+	background: white;
+	border-radius: 10px;
+	padding:10px;
+}
+.accordion:hover {
+	color:#fd7e14;
+  cursor: pointer;
+}
+.accordion__answer {
+  display: none;
+}
+.accordion.active .accordion__answer {
+  display: block;
+  border-left: 4px solid #fd7e14;
+}
+.accordion.active .accordion__question {
+  display: block;
+  color:#fd7e14;
+  border-bottom: 2px solid #fd7e14;
+}
+	</style>
+{%endblock%}
+{%block body%}
+<!-- breadcrumb-section - start
+		================================================== -->
+		<section id="breadcrumb-section" class="breadcrumb-section clearfix">
+			<div class="jarallax" style="background-image: url({% static '' %}images/breadcrumb/0.breadcrumb-bg.jpg);">
+				<div class="overlay-black">
+					<div class="container">
+						<div class="row justify-content-center">
+							<div class="col-lg-6 col-md-12 col-sm-12">
+
+								<!-- breadcrumb-title - start -->
+								<div class="breadcrumb-title text-center mb-50">
+									<span class="sub-title">event single</span>
+									<h2 class="big-title">{{setting.title}}<strong>event details</strong></h2>
+								</div>
+								<!-- breadcrumb-title - end -->
+
+								<!-- breadcrumb-list - start -->
+								<div class="breadcrumb-list">
+									<ul>
+										<li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Home</a></li>
+										<li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Events</a></li>
+										<li class="breadcrumb-item active" aria-current="page">{{event.title}}</li>
+									</ul>
+								</div>
+								<!-- breadcrumb-list - end -->
+
+							</div>
+						</div>
+					</div>
+					{% if messages %}
+			<br>
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-9">
+
+							{% for message in messages %}
+								<div class="alert alert-{{message.tags}}" role="alert">
+									{{ message |safe}}
+								</div>
+							{% endfor %}
+
+						</div>
+					</div>
+				</div>
+
+			{% endif %}
+				</div>
+			</div>
+		</section>
+		<!-- breadcrumb-section - end
+		================================================== -->
+
+
+
+
+
+		<!-- event-details-section - start
+		================================================== -->
+		<section id="event-details-section" class="event-details-section sec-ptb-100 clearfix">
+			<div class="container">
+				<div class="row">
+
+					<!-- col - event-details - start -->
+					<div class="col-lg-8 col-md-12 col-sm-12">
+
+						<!-- event-details - start -->
+						<div class="event-details mb-80">
+
+							<div class="event-title mb-30">
+								<span class="tag-item">
+									<i class="fas fa-bookmark"></i>
+									Featured Event
+								</span>
+								<h2 class="event-title">{{event.title}}</h2>
+							</div>
+
+							<div id="event-details-carousel" class="event-details-carousel owl-carousel owl-theme">
+								{% for i in images %}
+								<div class="item">
+									<img src="{{i.image.url}}" alt="Image_not_found">
+								</div>
+								{%endfor%}
+								{%for v in video%}
+								<video class="video-fluid" controls="controls" style="height:400px;width:500px;">
+                                                                <source src="{{v.video.url}}" type="video/mp4"/>
+								</video>
+								{%endfor%}
+							</div>
+
+							<div class="event-info-list ul-li clearfix mb-50">
+								<ul>
+									<li>
+										<span class="icon">
+											<i class="far fa-clock"></i>
+										</span>
+										<div class="event-content">
+											<small class="event-title">Event Start </small>
+											<h3 class="event-date">{{event.start_time}}</h3>
+										</div>
+									</li>
+									<li>
+										<span class="icon">
+											<i class="far fa-clock"></i>
+										</span>
+										<div class="event-content">
+											<small class="event-title">Event End</small>
+											<h3 class="event-date">{{event.end_time}}</h3>
+										</div>
+									</li>
+
+								</ul>
+							</div>
+
+							<div class="event-info-list ul-li clearfix mb-50">
+								<ul>
+									<li>
+										<span class="icon">
+											<i class="fas fa-map-marker-alt"></i>
+										</span>
+										<div class="event-content">
+											<small class="event-title">Event Location</small>
+											<h3 class="event-date">{{event.area}}</h3>
+										</div>
+									</li>
+									<li>
+										<span class="icon">
+											<i class="fas fa-users"></i>
+										</span>
+
+										<div class="event-content">
+											<small class="event-title">Volunteers required</small>
+											<h3 class="event-date">{{event.members}}</h3>
+										</div>
+									</li>
+								</ul>
+							</div>
+
+							<p class="black-color mb-30">
+								{{event.description|safe}}
+							</p>
+
+
+						</div>
+						<!-- event-details - end -->
+
+						<!-- event-schedule - start -->
+						<div class="event-schedule mb-80">
+
+							<div class="section-title text-left mb-30">
+								<h2 class="big-title">event <strong>schedule</strong></h2>
+							</div>
+
+							<!-- schedule-wrapper - start -->
+							<div class="schedule-wrapper">
+								{{event.detail|safe}}
+
+							</div>
+							<!-- schedule-wrapper - end -->
+
+						</div>
+						<!-- event-schedule - end -->
+
+						<!-- register-wrapper - start -->
+						<div class="register-wrapper mb-80 clearfix">
+
+							<div class="section-title text-left mb-50">
+								<span class="line-style"></span>
+								<h2 class="big-title">register <strong>now</strong></h2>
+							</div>
+
+							<div class="register-table">
+								<ul>
+									<li class="rt-header">
+										<div class="header-leftside-content"><strong>{{event.start_time}}</strong> --<strong>{{event.end_time}}</strong></div>
+
+									</li>
+
+									<li class="rt-footer">
+										<div class="footer-leftside-content">
+											<span class="payment-card">
+												<img src="{% static '' %}images/payment-cards.png" alt="payment_cards_not_found">
+											</span>
+											<span class="total-price">TOTAL PRICE :  Free</span>
+										</div>
+										{%if a == 2 %}
+										<div class="footer-rightside-content">
+											<a href="{% url 'volunteer' event.id%}" class="custom-btn">Organiser</a>
+										</div>
+										{%elif a == 1 %}
+										<div class="footer-rightside-content">
+											<a href="{% url 'r_volunteers' event.id%}" class="custom-btn">UnRegister</a>
+										</div>
+										{%else%}
+										<div class="footer-rightside-content">
+											{% if event.members <= 0  %}
+											Required number of volunteer is fulfilled
+											{%else%}
+											<a href="{% url 'r_volunteers' event.id%}" class="custom-btn">Volunteer now</a>
+											{% endif %}
+										</div>
+										{%endif%}
+									</li>
+								</ul>
+							</div>
+
+						</div>
+						<!-- register-wrapper - end -->
+						<div class="section-title text-left mb-50">
+								<h2 class="big-title">Event <strong>reviews</strong></h2>
+							</div>
+						<!-- reviewer-comment-wrapper - start -->
+						{%for rs in comments%}
+						<div class="reviewer-comment-wrapper mb-30 clearfix">
+
+
+							<div class="comment-bar clearfix">
+
+								<div class="admin-image">
+									<img src="{{ rs.user.userprofile.image.url }}" alt="Image_not_found">
+								</div>
+								<div class="comment-content">
+
+									<div class="admin-name mb-15">
+
+										<div class="rateing-star ul-li clearfix">
+											<ul>
+												<li class="rated"><i class="fas fa-star{% if rs.rate < 1 %}-o empty{% endif %}"></i></li>
+												<li class="rated"><i class="fas fa-star{% if rs.rate < 2 %}-o empty{% endif %}"></i></li>
+												<li class="rated"><i class="fas fa-star{% if rs.rate < 3 %}-o empty{% endif %}"></i></li>
+												<li class="rated"><i class="fas fa-star{% if rs.rate < 4 %}-o empty{% endif %}"></i></li>
+												<li class="rated"><i class="fas fa-star{% if rs.rate < 5 %}-o empty{% endif %}"></i></li>
+											</ul>
+										</div>
+										<div class="name">
+											<a href="#!">{{rs.user.first_name}}</a>
+										</div>
+									</div>
+									<div class="comment-text">
+										<p class="mb-30">
+											{{rs.comment}}
+										</p>
+										{%if rs.note == True%}
+										<div class="btn-group-right float-left" style="background-color:#FFFDD0;">
+											<div class="row">
+												<div class="container">
+													<p >{{rs.event.user}} (Organiser) :{{rs.adminnote}}</p>
+												</div>
+											</div>
+										</div>
+										{%endif%}
+
+									</div>
+									<div class="meta-wrapper">
+
+											<div class="btn-group-right float-right">
+												<ul>
+													<li><a href="{%url 'e_comments' rs.id%}"><button type="button"><i class="fas fa-reply-all"></i> Reply</button></a></li>
+													<li><button type="button"><i class="fas fa-share-square"></i> Share</button></li>
+												</ul>
+											</div>
+										</div>
+								</div>
+
+							</div>
+
+
+						</div>
+						{%endfor%}
+						<!-- reviewer-comment-wrapper - end -->
+						{% if a == 1%}
+						<div class="section-title text-left mb-50">
+								<h2 class="big-title">Enter Event <strong>reviews</strong></h2>
+							</div>
+
+
+						<!-- Review Form -->
+                                        <div class="col-md-6">
+                                            <div id="review-form">
+                                                    <form class="review-form" action="/event/addcomment/{{ event.id }}" method="post" enctype = "multipart/form-data">
+                                    {% csrf_token %}
+
+                                                    <input class="input" name="subject" type="text" placeholder="Your Subject">
+                                                    <textarea class="input" name="comment" placeholder="Your Review"></textarea>
+                                                    <div class="input-rating">
+														<span>Your Rating: </span>
+														<fieldset><pre>Worst        Best</pre></fieldset>
+														<fieldset>
+
+
+														  <input type="radio" name="rate" value="1" class="big"/>
+
+														  <input type="radio"  name="rate" value="2" class="big"/>
+
+														  <input type="radio" name="rate" value="3" class="big"/>
+														  <input type="radio" name="rate" value="4" class="big"/>
+														  <input type="radio" name="rate" value="5" class="big"/>
+
+														</fieldset>
+
+														<div class="form-group">
+                                        <input name="image" class="input" type="file" placeholder="Enter image if any" multiple/>
+                                    </div>
+
+                                                    </div>
+                                                    {% if user.id is not None %}
+                                        <button class="custom-btn">Submit</button>
+                                    {% else %}
+                                        You must be logged in to post a review
+                                    {% endif %}
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <!-- /Review Form -->
+						{%else%}
+						You are not volunteered to comment on the event
+						{%endif%}
+
+					</div>
+					<!-- col - event-details - end -->
+
+					<!-- sidebar-section - start -->
+					<div class="col-lg-4 col-md-12 col-sm-12">
+						<div class="sidebar-section">
+
+							{% if a == 1 or a == 2%}
+							<a href="{%url 'room' event.id event.slug%}" class="custom-btn">
+														Join Chat Room
+													</a>
+							{%endif%}
+							<!-- Add to Calendar - start -->
+							<div title="Add to Calendar" class="addeventatc">
+								Add to Calendar
+								<span class="start">{{event.start_time}}</span>
+								<span class="end">{{event.end_time}}</span>
+								<span class="timezone">Europe/Paris</span>
+								<span class="title">{{event.title}}</span>
+								<span class="description">{{event.description}}</span>
+								<span class="location">Location of the event</span>
+								<span class="organizer">{{event.user.userprofile}}</span>
+								<span class="organizer_email">{{event.user.email}}</span>
+								<span class="all_day_event">false</span>
+								<span class="date_format">MM/DD/YYYY</span>
+							</div>
+							<!-- Add to Calendar - end -->
+
+							<!-- map-wrapper - start -->
+							<div class="map-wrapper mb-30">
+
+								<!-- section-title - start -->
+								<div class="section-title mb-30">
+									<h2 class="big-title">event <strong>location</strong></h2>
+								</div>
+								<!-- section-title - end -->
+
+								<div id="google-map">
+									<div id="googleMaps" class="google-map-container"></div>
+								</div>
+
+							</div>
+							<!-- map-wrapper - end -->
+
+							<!-- location-wrapper - start -->
+							<div class="location-wrapper mb-30">
+								<div class="title-wrapper">
+									<small class="up-arrow-icon">
+										<i class="fas fa-chevron-circle-up"></i>
+									</small>
+									<span class="icon">
+										<i class="fas fa-map-marker-alt"></i>
+									</span>
+									<div class="title-content">
+										<small>event location</small>
+										<h3>{{event.area}}</h3>
+									</div>
+								</div>
+								<div class="location-info-list ul-li-block clearfix">
+
+									<ul>
+										<li><i class="fas fa-arrow-circle-right"></i> {{event.location}}</li>
+										<li><i class="fas fa-arrow-circle-right"></i> From: <strong>{{event.start_time}}</strong></li>
+										<li><i class="fas fa-arrow-circle-right"></i> To: <strong>{{event.end_time}}</strong> </li>
+									</ul>
+								</div>
+								<div class="button">
+									<a href="#!" class="custom-btn">ADD TO MY CALENDAR</a>
+								</div>
+								<br>
+								<div class="button">
+									<a href="{% url 'feedback'%}?eid={{event.pk}}" class="custom-btn">FEEDBACK</a>
+								</div>
+
+							</div>
+							<!-- location-wrapper - end -->
+
+						</div>
+					</div>
+					<!-- sidebar-section - end -->
+
+				</div>
+			</div>
+		</section>
+		<!-- event-details-section - end
+		================================================== -->
+<!-- news-update-section - start
+		================================================== -->
+		<section id="news-update-section" class="news-update-section sec-ptb-100 clearfix">
+			<div class="container">
+				<div class="row">
+
+					<!-- faq-accordion - start -->
+						<!-- section-title - start -->
+						<div class="section-title mb-30">
+							<span class="line-style"></span>
+							<small class="sub-title">find your answer</small>
+							<h2 class="big-title">ask & <strong>questions</strong></h2>
+						</div>
+						<!-- section-title - end -->
+					<div class="col-lg-12 col-md-12 col-sm-12">
+						<form action="/event/faq/{{event.id}}" method="post">
+							<div class="col-lg-8 col-md-12 col-sm-12">
+								{% csrf_token %}
+								<div class="form-group">
+									<input class="input" type="text" name="question" placeholder="Question">
+									<button class="custom-btn" type="submit">make a question</a></button>
+								</div>
+
+
+							</div>
+
+						</form>
+						<div id="faq-accordion" class="faq-accordion">
+							<div class="layout">
+										{%for f in f%}
+										<div class="accordion">
+										  <div class="accordion__question">
+											  <div class="container">
+
+													<div class="row">
+											<b>{{f.question}}</b>
+													</div></div>
+
+										  </div>
+											<div class="accordion__answer">
+												<div class="container">
+
+													<div class="row">
+
+														<p><b>Answer:</b></p><br/>
+														<p>{{f.answer|safe}}</p>
+												  </div>
+												</div>
+											</div>
+										</div>
+										{%endfor%}
+										</div></div>
+
+						</div>
+					</div>
+					<!-- faq-accordion - end -->
+
+
+
+				</div>
+			</div>
+		</section>
+		<!-- news-update-section - end
+		================================================== -->
+
+{%block scripts%}
+<script>
+let answers = document.querySelectorAll(".accordion");
+answers.forEach((event) =>
+{
+  event.addEventListener("click", () =>
+  {
+    if (event.classList.contains("active"))
+    {
+      event.classList.remove("active");
+    }
+    else
+    {
+      event.classList.add("active");
+    }
+  });
+});
+</script>
+{%endblock%}
+{%endblock%}

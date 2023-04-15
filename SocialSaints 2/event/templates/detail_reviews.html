@@ -1,0 +1,127 @@
+{%extends 'homebase.html'%}
+{%load static%}
+{% block title %} {{ setting.title }} {% endblock %}
+{%block head%}
+<link rel="stylesheet" type="text/css" href="{% static '' %}css/custom.css">
+{%endblock%}
+{%block body%}
+<!-- breadcrumb-section - start
+		================================================== -->
+		<section id="breadcrumb-section" class="breadcrumb-section clearfix">
+			<div class="jarallax" style="background-image: url({% static '' %}images/breadcrumb/0.breadcrumb-bg.jpg);">
+				<div class="overlay-black">
+					<div class="container">
+						<div class="row justify-content-center">
+							<div class="col-lg-6 col-md-12 col-sm-12">
+
+								<!-- breadcrumb-title - start -->
+								<div class="breadcrumb-title text-center mb-50">
+									<span class="sub-title">{{setting.title}}</span>
+									<h2 class="big-title">{{setting.title}}<strong>event</strong></h2>
+								</div>
+								<!-- breadcrumb-title - end -->
+
+								<!-- breadcrumb-list - start -->
+								<div class="breadcrumb-list">
+									<ul>
+										<li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Home</a></li>
+										<li class="breadcrumb-item active" aria-current="page">User Profile</li>
+									</ul>
+								</div>
+								<!-- breadcrumb-list - end -->
+
+							</div>
+						</div>
+					</div>
+                    {% if messages %}
+			<br>
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-9">
+
+							{% for message in messages %}
+								<div class="alert alert-{{message.tags}}" role="alert">
+									{{ message |safe}}
+								</div>
+							{% endfor %}
+
+						</div>
+					</div>
+				</div>
+
+			{% endif %}
+				</div>
+			</div>
+		</section>
+		<!-- breadcrumb-section - end
+		================================================== -->
+
+		<!-- event-section - start
+		================================================== -->
+		<section id="event-section" class="event-section  sec-ptb-100 clearfix">
+			<div class="container">
+				<div class="row">
+
+					<!-- sidebar-section - start -->
+					<div class="col-lg-3 col-md-12 col-sm-12">
+						{%include 'user_panel.html'%}
+					</div>
+					<!-- sidebar-section - end -->
+
+					<div class="col-md-9">
+                    <div class="billing-details">
+                        <div class="section-title">
+                            <h3 class="title">Comments for {{event.title}}</h3>
+                        </div>
+                    </div>
+                     <table class="shopping-cart-table table">
+                         <tr>
+                             <th class="text-left">Event Image</th>
+                             <th class="text-left"><img src="{{ comment.event.image.url }}" alt="Image_not_found" style="height: 40px; border-radius: 30%"></th>
+                         </tr>
+                         <tr>
+                             <th class="text-left">User Image</th>
+                             <th class="text-left"><img src="{{ comment.event.user.image.url }}" alt="Image_not_found"style="height: 40px; border-radius: 30%"></th>
+                         </tr>
+                         <tr>
+                             <th class="text-left">User Name</th>
+                             <th class="text-left">{{ comment.user }}</th>
+                         </tr>
+                         <tr>
+                             <th class="text-left">Subject</th>
+                             <th class="text-left">{{ comment.subject }}</th>
+                         </tr>
+                         <tr>
+                             <th class="text-left">Comment</th>
+                             <th class="text-left">{{ comment.comment }}</th>
+                         </tr>
+                         <tr>
+                             <th class="text-left">Rate</th>
+                             <th class="text-left">{{ comment.rate }}</th>
+                         </tr>
+
+                    </table>
+                        <Form action="" method="post">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+                                <div class="billing-details">
+
+                                    <div class="section-title">
+                                        <h4 class="title">Post your review / Thoughts</h4>
+                                    </div>
+                                    {{update.as_p}}
+                                    <div class="form-group">
+                            <button class="custom-btn" type="submit">Update</button>
+                        </div>
+
+                        </Form>
+
+                </div>
+
+				</div>
+			</div>
+		</section>
+		<!-- event-section - end
+		================================================== -->
+
+{%endblock%}

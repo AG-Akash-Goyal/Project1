@@ -1,0 +1,113 @@
+{%load static%}
+{%block body%}
+<!-- slide-section - start
+		================================================== -->
+		<section id="main-carousel2" class="main-carousel2 clearfix">
+
+			{% for e in event%}
+			<div class="item" style="background-image: url({{e.image.url}});">
+				<div class="overlay-black">
+					<div class="container">
+						<div class="row">
+
+							<!-- slider-content - start -->
+							<div class="col-lg-8">
+								<div class="slider-content">
+									<div class="countdown-timer mb-30">
+										<ul class="countdown-list" data-countdown="2020/08/08"></ul>
+									</div>
+									<span class="date">{{e.start_time}}</span>
+									<h1 class="title-text">
+										<strong class="bold-text">{{e.title}}</strong>
+									</h1>
+									<h6 style="color:white;">{{e.description|safe}}</h6>
+									<a href="{% url 'r_volunteers' e.id%}" class="custom-btn">Volunteer</a>
+									<a href="{%url 'event_details' e.id e.slug%}" class="details-btn">event details</a>
+								</div>
+							</div>
+							<!-- slider-content - end -->
+
+						</div>
+					</div>
+				</div>
+			</div>
+			{%endfor%}
+
+		</section>
+		<!-- slide-section - end
+		================================================== -->
+		<!-- absolute-eventmake-section - start
+		================================================== -->
+		<div id="absolute-eventmake-section" class="absolute-eventmake-section sec-ptb-100 bg-gray-light clearfix">
+			<div class="eventmaking-wrapper">
+
+				<script>
+                    $(function() {
+                        $("#query").autocomplete({
+                            source: "/search_auto/",
+
+                        });
+                    });
+
+                </script>
+
+				<div class="tab-content">
+					<div id="conference" class="tab-pane fade in active show">
+						<form action="/search/" method="post">
+							{%csrf_token%}
+							<ul>
+
+								<li>
+									<input id ="query" name="query" type="text" placeholder="Type event name">
+								</li>
+								<li>
+									<select name="areaid" class="country-select">
+										<option value="0" selected="">Select Area</option>
+
+										{% load mptt_tags%}
+										{% recursetree area %}
+											{% if node.is_leaf_node %}
+												<option value="{{node.id}}">{{node.title}}</option>
+											{%endif%}
+											{% if not node.is_leaf_node %}
+												<optgroup label="{{node.title}}">
+													{{children}}
+												</optgroup>
+											{%endif%}
+										{% endrecursetree%}
+									</select>
+								</li>
+								<li>
+									<select name="catid" class="capital-select">
+										<option value="0" selected="">select Category</option>
+
+										{% load mptt_tags%}
+										{% recursetree category %}
+											{% if node.is_leaf_node %}
+												<option value="{{node.id}}">{{node.title}}</option>
+											{%endif%}
+											{% if not node.is_leaf_node %}
+												<optgroup label="{{node.title}}">
+													{{children}}
+												</optgroup>
+											{%endif%}
+										{% endrecursetree%}
+									</select>
+								</li>
+
+								<li>
+									<button type="submit" class="custom-btn">search event</button>
+								</li>
+
+							</ul>
+						</form>
+					</div>
+
+
+
+			</div>
+		</div>
+		<!-- absolute-eventmake-section - end
+		================================================== -->
+{%endblock%}
+

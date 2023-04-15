@@ -1,0 +1,109 @@
+{%extends 'homebase.html'%}
+{%load static%}
+{% block title %} {{ setting.title }} {% endblock %}
+{%block head%}
+<link rel="stylesheet" type="text/css" href="{% static '' %}css/custom.css">
+{%endblock%}
+{%block body%}
+<!-- breadcrumb-section - start
+		================================================== -->
+		<section id="breadcrumb-section" class="breadcrumb-section clearfix">
+			<div class="jarallax" style="background-image: url({% static '' %}images/breadcrumb/0.breadcrumb-bg.jpg);">
+				<div class="overlay-black">
+					<div class="container">
+						<div class="row justify-content-center">
+							<div class="col-lg-6 col-md-12 col-sm-12">
+
+								<!-- breadcrumb-title - start -->
+								<div class="breadcrumb-title text-center mb-50">
+									<span class="sub-title">{{setting.title}}</span>
+									<h2 class="big-title">{{setting.title}}<strong>event</strong></h2>
+								</div>
+								<!-- breadcrumb-title - end -->
+
+								<!-- breadcrumb-list - start -->
+								<div class="breadcrumb-list">
+									<ul>
+										<li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Home</a></li>
+										<li class="breadcrumb-item active" aria-current="page">User Profile</li>
+									</ul>
+								</div>
+								<!-- breadcrumb-list - end -->
+
+							</div>
+						</div>
+					</div>
+                    {% if messages %}
+			<br>
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-9">
+
+							{% for message in messages %}
+								<div class="alert alert-{{message.tags}}" role="alert">
+									{{ message |safe}}
+								</div>
+							{% endfor %}
+
+						</div>
+					</div>
+				</div>
+
+			{% endif %}
+				</div>
+			</div>
+		</section>
+		<!-- breadcrumb-section - end
+		================================================== -->
+
+		<!-- event-section - start
+		================================================== -->
+		<section id="event-section" class="event-section  sec-ptb-100 clearfix">
+			<div class="container">
+				<div class="row">
+
+					<!-- sidebar-section - start -->
+					<div class="col-lg-3 col-md-12 col-sm-12">
+						{%include 'user_panel.html'%}
+					</div>
+					<!-- sidebar-section - end -->
+
+					<div class="col-md-9">
+                        {% if f%}
+                    <div class="billing-details">
+                        <div class="section-title">
+                            <h3 class="title">FAQ for {{event.title}}</h3>
+                        </div>
+                    </div>
+                     <table class="shopping-cart-table table">
+						 <tr>
+							 <th>Question</th>
+							 <th>Answer</th>
+							 <th>Replied</th>
+						 </tr>
+                        {% for c in f%}
+                         <tr>
+							 <td>{{c.question}}</td>
+                            <td class="text-left">{{c.answer|safe}} </td>
+							 {%if not c.note%}
+
+							 <td ><i class="fas fa-times-circle fa-10x" style="color:red;font-size:20px;"></i></td>
+							 {%else%}
+							 <td ><i class="fas fa-check-circle" style="color:green;font-size:20px;"></i></td>
+							 {%endif%}
+                             <td><a href="{% url 'e_faq_reply' c.id%}" class="custom-btn">Reply</a></td>
+                        </tr>
+                         {%endfor%}
+                    </table>
+                        {%else%}
+                        <h2>No Questions yet</h2>
+                        {%endif%}
+                </div>
+
+				</div>
+			</div>
+		</section>
+		<!-- event-section - end
+		================================================== -->
+
+{%endblock%}

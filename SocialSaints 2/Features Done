@@ -1,0 +1,42 @@
+Features done
+
+1. Login and Register Module
+    ->Login for already registeered Users
+    ->Register module for new or guest users
+    ->Throw error messages if user already exits , error in password
+    ->Change password
+    ->Forgot password (through email)
+
+2. User Module
+    ->update his profile
+    ->go through the events posted
+    ->can volunteer for events
+    ->can comment on post only if he is a volunteer
+    ->can ask question for each event
+    ->can see the list of events he has volunteered
+    -> search
+        -> search based on only the keywords
+        ->search based on keywords in category
+        ->search based on keywords in area
+        ->search based on keywords in category and area
+
+3.Event Management Module
+    ->add category and sub-category
+    ->add area and sub-areas
+    ->add,update,delete (whole event),delete(particular event image / event video)
+    ->automatically creating chat rooms
+    ->can see the list of events he has organised
+    ->organiser can see the list of volunteers and view their profile
+    ->organiser can reply to the comments
+    ->organiser can reply to the faq asked
+
+4.Communication Module
+    -> real time chat for volunteers using django channels
+
+
+
+Remaining features (Jimit and Akash)
+display events based on 15km radius
+integrate maps for event details
+Report generation module
+Feedback module

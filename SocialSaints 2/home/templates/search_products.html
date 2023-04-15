@@ -1,0 +1,328 @@
+{%extends 'homebase.html'%}
+{%load static%}
+{% block title %} {{ setting.title }} {% endblock %}
+{%block body%}
+<!-- breadcrumb-section - start
+		================================================== -->
+		<section id="breadcrumb-section" class="breadcrumb-section clearfix">
+			<div class="jarallax" style="background-image: url({% static '' %}images/breadcrumb/0.breadcrumb-bg.jpg);">
+				<div class="overlay-black">
+					<div class="container">
+						<div class="row justify-content-center">
+							<div class="col-lg-6 col-md-12 col-sm-12">
+
+								<!-- breadcrumb-title - start -->
+								<div class="breadcrumb-title text-center mb-50">
+									<span class="sub-title">{{setting.title}}</span>
+									<h2 class="big-title">{{setting.title}}<strong>event</strong></h2>
+								</div>
+								<!-- breadcrumb-title - end -->
+
+								<!-- breadcrumb-list - start -->
+								<div class="breadcrumb-list">
+									<ul>
+										<li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Home</a></li>
+										<li class="breadcrumb-item active" aria-current="page">event listing</li>
+									</ul>
+								</div>
+								<!-- breadcrumb-list - end -->
+
+							</div>
+						</div>
+					</div>
+					{% if messages %}
+			<br>
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-9">
+
+							{% for message in messages %}
+								<div class="alert alert-{{message.tags}}" role="alert">
+									{{ message |safe}}
+								</div>
+							{% endfor %}
+
+						</div>
+					</div>
+				</div>
+
+			{% endif %}
+				</div>
+			</div>
+		</section>
+		<!-- breadcrumb-section - end
+		================================================== -->
+
+		<!-- absolute-eventmake-section - start
+		================================================== -->
+		<div id="absolute-eventmake-section" class="absolute-eventmake-section sec-ptb-100 bg-gray-light clearfix">
+			<div class="eventmaking-wrapper">
+
+				<script>
+                    $(function() {
+                        $("#query").autocomplete({
+                            source: "/search_auto/",
+
+                        });
+                    });
+
+                </script>
+
+				<div class="tab-content">
+					<div id="conference" class="tab-pane fade in active show">
+						<form action="/search/" method="post">
+							{%csrf_token%}
+							<ul>
+
+								<li>
+									<input id ="query" name="query" type="text" placeholder="Type event name">
+								</li>
+								<li>
+									<select name="areaid" class="country-select">
+										<option value="0" selected="">Select Area</option>
+
+										{% load mptt_tags%}
+										{% recursetree area %}
+											{% if node.is_leaf_node %}
+												<option value="{{node.id}}">{{node.title}}</option>
+											{%endif%}
+											{% if not node.is_leaf_node %}
+												<optgroup label="{{node.title}}">
+													{{children}}
+												</optgroup>
+											{%endif%}
+										{% endrecursetree%}
+									</select>
+								</li>
+								<li>
+									<select name="catid" class="capital-select">
+										<option value="0" selected="">select Category</option>
+
+										{% load mptt_tags%}
+										{% recursetree category %}
+											{% if node.is_leaf_node %}
+												<option value="{{node.id}}">{{node.title}}</option>
+											{%endif%}
+											{% if not node.is_leaf_node %}
+												<optgroup label="{{node.title}}">
+													{{children}}
+												</optgroup>
+											{%endif%}
+										{% endrecursetree%}
+									</select>
+								</li>
+
+								<li>
+									<button type="submit" class="custom-btn">search event</button>
+								</li>
+
+							</ul>
+						</form>
+					</div>
+
+
+
+			</div>
+		</div>
+		<!-- absolute-eventmake-section - end
+		================================================== -->
+
+
+		<!-- event-section - start
+		================================================== -->
+		<section id="event-section" class="event-section bg-gray-light sec-ptb-100 clearfix">
+			<div class="container">
+				<div class="row">
+
+					<!-- sidebar-section - start -->
+					<div class="col-lg-3 col-md-12 col-sm-12">
+						<div class="sidebar-section">
+
+							<!-- Add to Calendar - start -->
+							<div title="Add to Calendar" class="addeventatc">
+								Add to Calendar
+								<span class="start">06/18/2015 09:00 AM</span>
+								<span class="end">06/18/2015 11:00 AM</span>
+								<span class="timezone">Europe/Paris</span>
+								<span class="title">Summary of the event</span>
+								<span class="description">Description of the event</span>
+								<span class="location">Location of the event</span>
+								<span class="organizer">Organizer</span>
+								<span class="organizer_email">Organizer e-mail</span>
+								<span class="all_day_event">false</span>
+								<span class="date_format">MM/DD/YYYY</span>
+							</div>
+							<!-- Add to Calendar - end -->
+
+							<!-- map-wrapper - start -->
+							<div class="map-wrapper mb-30">
+
+								<h2 class="title-small default-color mb-30">Google Map Search</h2>
+
+								<div id="google-map">
+									<div id="googleMaps" class="google-map-container"></div>
+								</div>
+
+							</div>
+							<!-- map-wrapper - end -->
+
+							<!-- spacial-event-wrapper - start -->
+							<div class="spacial-event-wrapper text-center" style="background-image: url({% static '' %}images/spacial-event-bg.jpg);">
+								<div class="overlay-black">
+									<p class="sub-title white-color mb-30">26 DECEMBER 2018</p>
+									<h2 class="title-large white-color mb-30">
+										AMSTERDAM
+										<strong class="yellow-color">PHP CONFERENCE</strong>
+									</h2>
+									<a href="#!" class="custom-btn">booking ticket</a>
+								</div>
+							</div>
+							<!-- spacial-event-wrapper - end -->
+
+						</div>
+					</div>
+					<!-- sidebar-section - end -->
+
+					<!-- - start -->
+					<div class="col-lg-9 col-md-12 col-sm-12">
+
+						<div class="search-result-form">
+							<form action="#!">
+								<ul>
+
+									<li>
+										<span class="result-text">Search results for {{query}}</span>
+									</li>
+
+								</ul>
+							</form>
+
+							<ul class="nav event-layout-btngroup">
+								<li><a class="active" data-toggle="tab" href="#list-style"><i class="fas fa-th-list"></i></a></li>
+								<li><a data-toggle="tab" href="#grid-style"><i class="fas fa-th"></i></a></li>
+							</ul>
+						</div>
+
+						<div class="tab-content">
+							<div id="list-style" class="tab-pane fade in active show">
+                                {%for event in event%}
+								<!-- event-item - start -->
+								<div class="event-list-item clearfix">
+
+									<!-- event-image - start -->
+									<div class="event-image">
+
+										<img src="{{event.image.url}}" alt="Image_not_found">
+									</div>
+									<!-- event-image - end -->
+
+									<!-- event-content - start -->
+									<div class="event-content">
+										<div class="event-title mb-15">
+											<h3 class="title">
+												<strong>{{event.title}}</strong>
+											</h3>
+											<span class="ticket-price yellow-color">Free</span>
+										</div>
+										<p class="discription-text mb-30">
+											{{event.description|safe}}
+                                        </p>
+										<div class="event-info-list ul-li clearfix">
+											<ul>
+												<li>
+													<span class="icon">
+														<i class="fas fa-microphone"></i>
+													</span>
+													<div class="info-content">
+														<small>Speaker</small>
+														<h3>{{event.user}}</h3>
+													</div>
+												</li>
+												<li>
+													<span class="icon">
+														<i class="fas fa-ticket-alt"></i>
+													</span>
+													<div class="info-content">
+														<small>Volunteer</small>
+														<h3>{{event.members}}</h3>
+													</div>
+												</li>
+												<li>
+													<a href="{%url 'event_details' event.id event.slug%}" class="tickets-details-btn">
+														tickets & details
+													</a>
+												</li>
+											</ul>
+										</div>
+									</div>
+									<!-- event-content - end -->
+
+								</div>
+								<!-- event-item - end -->
+                                {%endfor%}
+
+
+
+
+							</div>
+
+							<div id="grid-style" class="tab-pane fade">
+								<div class="row justify-content-center">
+                                    {%for event in event%}
+									<!-- event-grid-item - start -->
+									<div class="col-lg-6 col-md-6 col-sm-12">
+										<div class="event-grid-item">
+											<!-- event-image - start -->
+											<div class="event-image">
+												<img src="{{event.image.url}}" alt="Image_not_found">
+											</div>
+											<!-- event-image - end -->
+
+											<!-- event-content - start -->
+											<div class="event-content">
+												<div class="event-title mb-30">
+													<h3 class="title">
+														{{event.title}}
+													</h3>
+													<span class="ticket-price yellow-color">Free</span>
+												</div>
+												<div class="event-post-meta ul-li-block mb-30">
+													<ul>
+														<li>
+															<span class="icon">
+																<i class="far fa-clock"></i>
+															</span>
+															{{event.start_time}}
+														</li>
+														<li>
+															<span class="icon">
+																<i class="fas fa-map-marker-alt"></i>
+															</span>
+															{{event.area}}
+														</li>
+													</ul>
+												</div>
+												<a href="#!" class="tickets-details-btn">
+													tickets & details
+												</a>
+											</div>
+											<!-- event-content - end -->
+										</div>
+									</div>
+									<!-- event-grid-item - end -->
+                                    {%endfor%}
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- - end -->
+
+				</div>
+			</div>
+		</section>
+		<!-- event-section - end
+		================================================== -->
+
+{%endblock%}

@@ -1,0 +1,151 @@
+{%extends 'homebase.html'%}
+{%load static%}
+{% block title %} {{ setting.title }} {% endblock %}
+{%block head%}
+<link rel="stylesheet" type="text/css" href="{% static '' %}css/custom.css">
+{%endblock%}
+{%block body%}
+<!-- breadcrumb-section - start
+		================================================== -->
+		<section id="breadcrumb-section" class="breadcrumb-section clearfix">
+			<div class="jarallax" style="background-image: url({% static '' %}images/breadcrumb/0.breadcrumb-bg.jpg);">
+				<div class="overlay-black">
+					<div class="container">
+						<div class="row justify-content-center">
+							<div class="col-lg-6 col-md-12 col-sm-12">
+
+								<!-- breadcrumb-title - start -->
+								<div class="breadcrumb-title text-center mb-50">
+									<span class="sub-title">{{setting.title}}</span>
+									<h2 class="big-title">{{setting.title}}<strong>event</strong></h2>
+								</div>
+								<!-- breadcrumb-title - end -->
+
+								<!-- breadcrumb-list - start -->
+								<div class="breadcrumb-list">
+									<ul>
+										<li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Home</a></li>
+										<li class="breadcrumb-item"><a href="{% url 'viewmyevent'%}" class="breadcrumb-link">My events</a></li>
+										<li class="breadcrumb-item active" aria-current="page">{{event.title}}</li>
+									</ul>
+								</div>
+								<!-- breadcrumb-list - end -->
+
+							</div>
+						</div>
+					</div>
+					{% if messages %}
+			<br>
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-9">
+
+							{% for message in messages %}
+								<div class="alert alert-{{message.tags}}" role="alert">
+									{{ message |safe}}
+								</div>
+							{% endfor %}
+
+						</div>
+					</div>
+				</div>
+
+			{% endif %}
+				</div>
+			</div>
+		</section>
+		<!-- breadcrumb-section - end
+		================================================== -->
+
+		<!-- event-section - start
+		================================================== -->
+		<section id="event-section" class="event-section  sec-ptb-100 clearfix">
+			<div class="container">
+				<div class="row">
+
+					<!-- sidebar-section - start -->
+					<div class="col-lg-3 col-md-12 col-sm-12">
+						{%include 'user_panel.html'%}
+					</div>
+					<!-- sidebar-section - end -->
+
+					<!-- - start -->
+					<div class="col-lg-9 col-md-12 col-sm-12">
+
+
+						<div class="tab-content">
+							<h2>Update Event</h2>
+							<form method="POST" enctype = "multipart/form-data">
+								{% csrf_token %}
+								<fieldset class="form-group">
+									{{update.media}}
+                                    {{update.category.label}}
+                            {{update.category}}
+                                    {{update.area.label}}
+                            {{update.area}}
+                            {{update.title.label}}
+                            {{update.title}}
+                            {{update.keywords.label}}
+                            {{update.keywords}}
+                            {{update.description.label}}
+                            {{update.description}}
+                            {{update.image.label}}
+                            {{update.image}}
+                            {{update.detail.label}}
+                            {{update.detail}}
+                            {{update.members.label}}
+                            {{update.members}}
+									{{update.location.label}}
+									{{update.location}}
+                            {{update.start_time.label}}
+                            {{update.start_time}}
+                            {{update.end_time.label}}
+                            {{update.end_time}}
+                            {{update.status.label}}
+                            {{update.status}}
+                            Image: <input type="file" name="image" multiple="multiple"></br>
+									{%if images%}
+									<table>
+									{%for i in images%}
+
+										<tr>
+											<td>{{i.id}}</td>
+											<td><img src="{{i.image.url}}" style="height:250px;width:500px;"></td>
+											<td><a class="custom-btn" href="{%url 'deleteimage' i.id %}" onclick="return confirm('Image Will be Deleted ! Are you sure?')">Delete</a></td></tr>
+									{%endfor%}
+									</table>
+									{%endif%}
+									<br>
+                            Video: <input type="file" name="video" multiple="multiple"></br>
+									{%if video%}
+									<table>
+										{% for rs in video%}
+										<tr>
+                                            <td><video class="video-fluid" controls="controls" style="height:400px;width:500px;">
+                                                                <source src="{{rs.video.url}}" type="video/mp4"/>
+											</video></td>
+											<td><a class="custom-btn" href="{% url 'deletevideo' rs.id %}" onclick="return confirm('Video Will be Deleted ! Are you sure?')">Delete</a></td>
+										</tr>
+                                            {%endfor%}
+
+									</table>
+									{%endif%}
+
+
+								</fieldset>
+								<div class="form-group">
+									<button class="custom-btn" type="submit">Update Event</button>
+								</div>
+							</form>
+						</div>
+
+					</div>
+					<!-- - end -->
+
+				</div>
+			</div>
+		</section>
+		<!-- event-section - end
+		================================================== -->
+
+{%endblock%}

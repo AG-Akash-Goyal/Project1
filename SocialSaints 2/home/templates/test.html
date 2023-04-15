@@ -1,0 +1,174 @@
+{%extends 'homebase.html'%}
+{%load static%}
+{% block title %} {{ setting.title }} {% endblock %}
+{%block body%}
+{%include 'slider.html'%}
+
+		<!-- event-section - start
+		================================================== -->
+		<section id="event-section" class="event-section sec-ptb-100 bg-gray-light clearfix">
+			<div class="container">
+
+				<div class="mb-50">
+					<div class="row">
+
+						<!-- section-title - start -->
+						<div class="col-lg-4 col-md-12 col-sm-12">
+							<div class="section-title text-left">
+								<span class="line-style"></span>
+
+								<h2 class="big-title"><strong>event</strong> listing</h2>
+							</div>
+						</div>
+						<!-- section-title - end -->
+						<!-- event-tab-menu - start -->
+						<div class="col-lg-8 col-md-12 col-sm-12">
+							<div class="event-tab-menu clearfix">
+								<ul class="nav">
+									<li>
+										<a class="active" data-toggle="tab" href="#conference-event">
+											<strong>New</strong> events in your area
+										</a>
+									</li>
+									<li>
+										<a data-toggle="tab" href="#conference-event">
+											<strong>All</strong> events in your area
+										</a>
+									</li>
+
+								</ul>
+							</div>
+						</div>
+						<!-- event-tab-menu - end -->
+
+
+
+				<!-- tab-content - start -->
+				<div class="tab-content">
+
+					<!-- conference-event - start -->
+					<div id="conference-event" class="tab-pane fade in active show">
+						<div class="row">
+
+							{% for e in event%}
+							<!-- event-item - start -->
+							<div class="col-lg-4 col-md-6 col-sm-12">
+								<div class="event-item2 clearfix">
+
+									<!-- event-image - start -->
+									<div class="event-image">
+
+										<img src="{{e.image.url}}" alt="Image_not_found" >
+									</div>
+									<!-- event-image - end -->
+
+									<!-- event-content - start -->
+									<div class="event-content">
+										<div class="event-title mb-15">
+											<h3 class="title">
+												{{e.title}}
+											</h3>
+											<span class="ticket-price yellow-color">Free</span>
+										</div>
+										<div class="event-post-meta ul-li-block mb-30">
+											<ul>
+												<li>
+													<span class="icon">
+														<i class="far fa-clock"></i>
+													</span>
+													Start {{e.start_time}} - {{e.end_time}}
+												</li>
+												<li>
+													<span class="icon">
+														<i class="fas fa-map-marker-alt"></i>
+													</span>
+													{{e.area}}
+												</li>
+											</ul>
+										</div>
+										<a href="{%url 'event_details' e.id e.slug%}" class="tickets-details-btn">
+											tickets & details
+										</a>
+									</div>
+									<!-- event-content - end -->
+
+								</div>
+							</div>
+							<!-- event-item - end -->
+							{%endfor%}
+
+				</div>
+				<!-- tab-content - end -->
+
+			</div>
+		</section>
+		<!-- event-section - end
+		================================================== -->
+
+		<!-- event-gallery-section - start
+		================================================== -->
+		<section id="event-gallery-section" class="event-gallery-section sec-ptb-100 clearfix">
+			<div class="container">
+
+				<!-- section-title - start -->
+				<div class="section-title text-center mb-80">
+					<small class="sub-title">{{setting.title}} gallery</small>
+					<h2 class="big-title">Beautiful & <strong>Unforgettable Times</strong></h2>
+				</div>
+				<!-- section-title - end -->
+
+				<div class="button-group filters-button-group mb-30">
+					<button class="button is-checked" data-filter="*">
+						<i class="fas fa-star"></i>
+						<strong>all</strong> gallery
+					</button>
+					<button class="button" data-filter=".video-gallery">
+						<i class="fas fa-play-circle"></i>
+						<strong>video</strong> gallery
+					</button>
+					<button class="button" data-filter=".photo-gallery">
+						<i class="far fa-image"></i>
+						<strong>photo</strong> gallery
+					</button>
+				</div>
+
+				<div class="grid zoom-gallery clearfix mb-80" data-isotope="{ &quot;masonry&quot;: { &quot;columnWidth&quot;: 0 } }">
+					{%for v in video%}
+
+				<div class="grid-item video-gallery " data-category="video-gallery">
+					<video class="video-fluid" controls="controls" style="height:250px;width:400px;" >
+						<source src="{{v.video.url}}" type="video/mp4"/>
+					</video>
+					<div class="item-content">
+						<h3>{{v.video.event.title}}</h3>
+						<span>{{v.video.event.start_time}}</span>
+					</div>
+				</div>
+					{%endfor%}
+					{%for i in images%}
+				<div class="grid-item photo-gallery " data-category="photo-gallery">
+					<a class="popup-link" href="{{i.image.url}}">
+						<img src="{{i.image.url}}" alt="Image_not_found" style="height:250px;width:1500px;">
+					</a>
+					<div class="item-content">
+						<h3>{{i.event.title}}</h3>
+						<span>{{i.event.start_time}}</span>
+					</div>
+				</div>
+					{%endfor%}
+
+
+			</div>
+
+				<div class="text-center">
+					<a href="{% url 'gallery' %}" class="custom-btn">view all gallery</a>
+				</div>
+
+			</div>
+		</section>
+		<!-- event-gallery-section - end
+		================================================== -->
+
+
+
+{%endblock%}

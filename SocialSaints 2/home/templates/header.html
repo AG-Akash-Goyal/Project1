@@ -1,0 +1,326 @@
+{%load static%}
+		<!-- backtotop - start -->
+		<div id="thetop" class="thetop"></div>
+		<div class='backtotop'>
+			<a href="#thetop" class='scroll'>
+				<i class="fas fa-angle-double-up"></i>
+			</a>
+		</div>
+		<!-- backtotop - end -->
+
+		<!-- preloader - start -->
+		<div id="preloader"></div>
+		<!-- preloader - end -->
+
+
+
+
+		<!-- header-section - start
+		================================================== -->
+		<header id="header-section" class="header-section default-header-section auto-hide-header clearfix">
+
+			<!-- header-top - start -->
+			<div class="header-top">
+				<div class="container">
+					<div class="row">
+
+						<!-- basic-contact - start -->
+						<div class="col-lg-6">
+
+							<div class="basic-contact">
+								<ul>
+									<li>
+										<a href="#!">
+											<i class="fas fa-envelope"></i>
+											{{setting.email}}
+										</a>
+									</li>
+									<li>
+										<a href="#!">
+											<i class="fas fa-phone"></i>
+											{{setting.phone}}
+										</a>
+									</li>
+								</ul>
+							</div>
+
+						</div>
+
+						<!-- basic-contact - end -->
+
+
+
+						<!-- register-login-group - start -->
+						<div class="col-lg-6">
+							<div class="register-login-group">
+
+
+								<ul>
+									{%if user.id is not None%}
+
+									{%else%}
+									<li>
+										<a href="{%url 'signup'%}" >
+											<i class="fas fa-user"></i>
+											Register
+										</a>
+
+
+									</li>
+									<li>
+										<a href="{%url 'login'%}" >
+											<i class="fas fa-lock"></i>
+											Login
+										</a>
+										</li>
+									{%endif%}
+								</ul>
+							</div>
+						</div>
+						<!-- register-login-group - end -->
+
+					</div>
+				</div>
+
+			</div>
+			<!-- header-top - end -->
+
+			<!-- header-bottom - start -->
+			<div class="header-bottom">
+				<div class="container">
+					<div class="row">
+
+						<!-- site-logo-wrapper - start -->
+						<div class="col-lg-3">
+							<div class="site-logo-wrapper">
+								<a href="/" class="logo">
+									<img src="{{setting.icon.url}}" alt="logo_not_found" style="background:#fd7e14;height:70px;width:300px;">
+								</a>
+							</div>
+
+						</div>
+						<!-- site-logo-wrapper - end -->
+
+						<!-- mainmenu-wrapper - start -->
+						<div class="col-lg-9">
+							<div class="mainmenu-wrapper">
+								<div class="row">
+
+									<!-- menu-item-list - start -->
+									{% url 'home' as home%}
+									{% url 'aboutus' as aboutus %}
+									{% url 'contactus' as contactus %}
+									{% url 'gallery' as gallery%}
+									{% url 'cat' as cat%}
+									<div class="col-lg-10">
+										<div class="menu-item-list ul-li clearfix">
+											<ul>
+												<li class="menu-item-has-children {% if request.path == home%}active {%endif%}">
+													<a href="/">home</a>
+												</li>
+												<li class="menu-item-has-children {% if request.path == cat%}active {%endif%}">
+													<a href="{% url 'cat'%}" >Category events</a>
+
+												</li>
+
+												{%if request.path == home%}
+												<li class="menu-item-has-children">
+													<a href="#!">Other </a>
+													<ul class="sub-menu">
+														<li class="menu-item-has-children {% if request.path == aboutus%}active {%endif%}"><a href="{%url 'aboutus'%}">about</a></li>
+														<li class="menu-item-has-children {% if request.path == gallery %}active {%endif%}"><a href="{%url 'gallery'%}">Gallery</a></li>
+														<li class="menu-item-has-children {% if request.path == contactus%}active {%endif%}"><a href="{%url 'contactus'%}">contact us</a></li>
+													</ul>
+												</li>
+												{%else%}
+												<li class="menu-item-has-children {% if request.path == aboutus%}active {%endif%}"><a href="{%url 'aboutus'%}">about</a></li>
+														<li class="menu-item-has-children {% if request.path == gallery %}active {%endif%}"><a href="{%url 'gallery'%}">Gallery</a></li>
+														<li class="menu-item-has-children {% if request.path == contactus%}active {%endif%}"><a href="{%url 'contactus'%}">contact us</a></li>
+
+												{%endif%}
+
+												{% if messages and request.path == home%}
+												<li>
+													{% for message in messages %}
+														<div class="alert alert-{{message.tags}}" role="alert">
+															{{ message |safe}}
+														</div>
+													{% endfor %}
+												</li>
+												{% endif %}
+											</ul>
+										</div>
+									</div>
+									<!-- menu-item-list - end -->
+
+									<!-- menu-item-list - start -->
+									<div class="col-lg-2">
+										<div class="user-search-btn-group ul-li clearfix">
+											<ul>
+												{%if user.id is not None%}
+												<li>
+													<a href="{%url 'index'%}">
+														<img src="{{ request.user.userprofile.image.url }}" style="height: 40px; border-radius: 30%"><BR>
+														<h6>{{ user.first_name }}</h6>
+													</a>
+												</li>
+												{%endif%}
+
+											</ul>
+										</div>
+									</div>
+									<!-- menu-item-list - end -->
+
+								</div>
+							</div>
+						</div>
+						<!-- mainmenu-wrapper - end -->
+
+					</div>
+				</div>
+			</div>
+			<!-- header-bottom - end -->
+
+
+
+		</header>
+		<!-- header-section - end
+		================================================== -->
+		<!-- altranative-header - start
+		================================================== -->
+		<div class="header-altranative">
+			<div class="container">
+				<div class="logo-area float-left">
+					<a href="/">
+						<img src="{{setting.icon.url}}" alt="logo_not_found">
+					</a>
+				</div>
+
+				<button type="button" id="sidebarCollapse" class="alt-menu-btn float-right">
+					<i class="fas fa-bars"></i>
+				</button>
+			</div>
+
+			<!-- sidebar menu - start -->
+			<div class="sidebar-menu-wrapper">
+				<div id="sidebar" class="sidebar">
+					<span id="sidebar-dismiss" class="sidebar-dismiss">
+						<i class="fas fa-arrow-left"></i>
+					</span>
+
+					<div class="sidebar-header">
+						<a href="/">
+							<img src="{{setting.icon.url}}" alt="logo_not_found">
+						</a>
+					</div>
+
+					<!-- sidebar-form - start -->
+					<div class="sidebar-form">
+						<form action="/search/" method="post">
+							{%csrf_token%}
+							<input id="query" type="search" placeholder="Search">
+							<label for="query"><i class="fas fa-search"></i></label>
+						</form>
+					</div>
+					<!-- sidebar-form - end -->
+
+					<!-- other-pages-links - start -->
+					<div class="menu-link-list other-pages-links">
+						<h2 class="menu-title">all other links</h2>
+						<ul>
+							<li>
+								<a href="{%url 'aboutus'%}">
+									<span class="icon"><i class="fas fa-home"></i></span>
+									About Us
+								</a>
+							</li>
+							<li>
+								<a href="{% url 'cat'%}">
+									<span class="icon"><i class="fas fa-home"></i></span>
+									Category events
+								</a>
+							</li>
+
+							<li>
+								<a href="{%url 'gallery'%}">
+									<span class="icon"><i class="fas fa-home"></i></span>
+									our gallery
+								</a>
+							</li>
+							<li>
+								<a href="{%url 'contactus'%}">
+									<span class="icon"><i class="fas fa-home"></i></span>
+									contact us
+								</a>
+							</li>
+						</ul>
+					</div>
+					<!-- other-pages-links - end -->
+
+					<!-- login-btn-group - start -->
+					<div class="login-btn-group">
+						<ul>
+							{%if user.id is not None%}
+							<li>
+								<a href="{%url 'index'%}">
+									<img src="{{ request.user.userprofile.image.url }}" style="height: 40px; border-radius: 30%">
+									<h6 style="color:white;">{{ user.first_name }}</h6>
+								</a>
+							</li>
+							{%else%}
+							<li>
+								<a href="{%url 'signup'%}" >
+									Register
+								</a>
+								</li>
+							<li>
+								<a href="{%url 'login'%}" >
+									Login
+								</a>
+								</li>
+							{%endif%}
+						</ul>
+					</div>
+					<!-- login-btn-group - end -->
+
+					<!-- social-links - start -->
+					<div class="social-links">
+						<h2 class="menu-title">get in touch</h2>
+						<div class="mb-15">
+							<h3 class="contact-info">
+								<i class="fas fa-phone"></i>
+								{{setting.phone}}
+							</h3>
+							<h3 class="contact-info">
+								<i class="fas fa-envelope"></i>
+								{{setting.email}}
+							</h3>
+						</div>
+						<ul>
+							<li>
+								<a href="#!"><i class="fab fa-facebook-f"></i></a>
+							</li>
+							<li>
+								<a href="#!"><i class="fab fa-twitter"></i></a>
+							</li>
+							<li>
+								<a href="#!"><i class="fab fa-twitch"></i></a>
+							</li>
+							<li>
+								<a href="#!"><i class="fab fa-google-plus-g"></i></a>
+							</li>
+							<li>
+								<a href="#!"><i class="fab fa-instagram"></i></a>
+							</li>
+						</ul>
+						<a href="{%url 'contactus'%}" class="contact-btn">contact us</a>
+					</div>
+					<!-- social-links - end -->
+
+					<div class="overlay"></div>
+				</div>
+			</div>
+			<!-- sidebar menu - end -->
+		</div>
+		<!-- altranative-header - end
+		================================================== -->
